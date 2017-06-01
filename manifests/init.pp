@@ -305,6 +305,9 @@
 # [*rules*]
 #   Hash of auditd rules to be applied using the audit::rule defined type.
 #
+# [*ensure*]
+#   Ensure flag for the Package 
+#
 # === Examples
 #
 #  class { 'auditd':
@@ -322,6 +325,7 @@
 class auditd (
 
   $package_name            = $::auditd::params::package_name,
+  $ensure                  = $::auditd::params::ensure,
 
   # Config file variables
   $log_file                = $::auditd::params::log_file,
@@ -391,8 +395,8 @@ class auditd (
       "${write_logs} is not supported for write_logs. Allowed values are 'yes' and 'no'.")
   }
   validate_integer($priority_boost)
-  validate_re($flush, '^(none|incremental|data|sync)$',
-    "${flush} is not supported for flush. Allowed values are 'none', 'incremental', 'data' and 'sync'.")
+  validate_re($flush, '^(none|incremental|incremental_async|data|sync)$',
+    "${flush} is not supported for flush. Allowed values are 'none', 'incremental', 'incremental_async', 'data' and 'sync'.")
   validate_integer($freq)
   validate_integer($num_logs)
   validate_re($disp_qos, '^(lossy|lossless)$',
@@ -454,7 +458,7 @@ class auditd (
 
   # Install package
   package { $package_name:
-    ensure => 'present',
+    ensure => $ensure,
     alias  => 'auditd',
     before => [
       File['/etc/audit/auditd.conf'],
