@@ -1,5 +1,8 @@
 class auditd::params {
 
+  # default ensure
+  $ensure = 'present'
+
   # OS specific variables.
   case $::osfamily {
     'Debian': {
