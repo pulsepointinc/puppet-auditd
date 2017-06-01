@@ -1,5 +1,8 @@
 class auditd::params {
 
+  # default ensure
+  $ensure = 'present'
+
   # OS specific variables.
   case $::osfamily {
     'Debian': {
@@ -78,7 +81,7 @@ class auditd::params {
   $log_group               = 'root'
   $write_logs              = undef
   $priority_boost          = '4'
-  $flush                   = 'incremental'
+  $flush                   = 'incremental_async'
   $freq                    = '20'
   $num_logs                = '5'
   $disp_qos                = 'lossy'
